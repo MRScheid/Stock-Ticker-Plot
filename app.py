@@ -4,6 +4,7 @@ from bokeh.models import Range1d
 from bokeh.embed import components
 import pandas as pd 
 import quandl
+import os
 
 app = Flask(__name__)
 
