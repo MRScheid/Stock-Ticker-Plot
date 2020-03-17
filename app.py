@@ -9,6 +9,9 @@ app = Flask(__name__)
 
 app.vars={}
 
+@app.route('/', methods=['GET','POST'])
+def not_index():
+    return redirect('/index')
 
 @app.route('/index', methods=['GET','POST'])
 def index():
