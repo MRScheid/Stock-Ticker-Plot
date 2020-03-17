@@ -9,6 +9,10 @@ app = Flask(__name__)
 
 app.vars={}
 
+@app.route('/index', methods=['GET'])
+def not_index():
+    return redirect('/graph')
+
 @app.route('/', methods=['GET','POST'])
 def index():
 
