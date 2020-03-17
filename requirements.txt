@@ -4,4 +4,4 @@ flask
 quandl
 bokeh
 pandas
-os
+
