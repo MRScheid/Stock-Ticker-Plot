@@ -1,2 +1,0 @@
-Keys: dict_keys(['ticker'])
-Keys: dict_keys(['ticker'])
