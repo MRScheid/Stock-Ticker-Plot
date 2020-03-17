@@ -23,6 +23,11 @@ A [finished example](https://lemurian.herokuapp.com) that demonstrates some basi
 
   The advantages of conda include easier virtual environment management and fast package installation from binaries (as compared to the compilation that pip-installed packages sometimes require).
   One disadvantage is that binaries take up a lot of memory, and the slug pushed to Heroku is limited to 300 MB. Another note is that the conda buildpack is being deprecated in favor of a Docker solution (see [docker branch](https://github.com/thedataincubator/flask-framework/tree/docker) of this repo for an example).
+
+***MAKE SURE THAT THE SYSTEM'S PATH ENVIRONMENT IS AWARE OF virtualenv.exe WHEN TRYING TO CREATE A VIRTUAL ENVIRONMENT IN THE COMMAND PROMPT**
+
+https://stackoverflow.com/questions/58117467/python-venv-not-creating-virtual-environment
+
 - Deploy to Heroku: `git push heroku master`
 - You should be able to see your site at `https://<app_name>.herokuapp.com`
 - A useful reference is the Heroku [quickstart guide](https://devcenter.heroku.com/articles/getting-started-with-python-o).
