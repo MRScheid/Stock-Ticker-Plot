@@ -74,7 +74,7 @@ def graph():
                alpha=0.5, 
                legend_label='%s: Closing price'% tick)
         
-        del data1, feature1, app.vars['feature1']
+        del feature1, app.vars['feature1']
                
     # Check if feature2 was selected, if so query Quandl API and plot   
     if 'feature2' in app.vars.keys():
@@ -97,7 +97,7 @@ def graph():
                alpha=0.5, 
                legend_label='%s: Adj Closing price'% tick)
                
-        del data2, feature2, app.vars['feature2']
+        del feature2, app.vars['feature2']
     
     # Create the HTML script to pass and embed in the graph.html page
     script, div = components(p)
