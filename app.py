@@ -14,6 +14,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET','POST'])
 def not_index():
     app.vars={}
+    
     return redirect('/index')
 
 @app.route('/index', methods=['GET','POST'])
@@ -73,6 +74,8 @@ def graph():
                color="red", 
                alpha=0.5, 
                legend_label='%s: Closing price'% tick)
+        
+        del data1, feature1, app.vars['feature1']
                
     # Check if feature2 was selected, if so query Quandl API and plot   
     if 'feature2' in app.vars.keys():
@@ -94,10 +97,13 @@ def graph():
                color="blue", 
                alpha=0.5, 
                legend_label='%s: Adj Closing price'% tick)
+               
+        del data2, feature2, app.vars['feature2']
     
     # Create the HTML script to pass and embed in the graph.html page
     script, div = components(p)
     resources = INLINE.render()
+    del p
 
     # Now render the graph.html and pass scripts
     return render_template('graph.html',tick=tick,GenBokehPlot=script,GenBokehDiv=div,resources=resources)
