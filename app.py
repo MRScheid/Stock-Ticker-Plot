@@ -9,18 +9,17 @@ import os
 
 app = Flask(__name__)
 
-
-
 @app.route('/', methods=['GET','POST'])
 def not_index():
-    app.vars={}
-    
+    # If resetting to homepage, delete previous query entry
+    app.vars={}  
     return redirect('/index')
 
 @app.route('/index', methods=['GET','POST'])
 def index():
 
     if request.method == 'GET':
+        # If resetting to homepage, delete previous query entry
         app.vars={}
         return render_template('index.html')
 
@@ -103,7 +102,6 @@ def graph():
     # Create the HTML script to pass and embed in the graph.html page
     script, div = components(p)
     resources = INLINE.render()
-    del p
 
     # Now render the graph.html and pass scripts
     return render_template('graph.html',tick=tick,GenBokehPlot=script,GenBokehDiv=div,resources=resources)
