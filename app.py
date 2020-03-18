@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from bokeh.plotting import figure, show
 from bokeh.models import Range1d
 from bokeh.embed import components
+from bokeh.resources import INLINE
 import pandas as pd 
 import quandl
 import os
@@ -23,22 +24,17 @@ def index():
     else:
         # request was a POST
         app.vars['ticker'] = request.form['ticker']
+        
+        # Check if feature1 was selected, if so extract the value
         if 'feature1' in request.form.keys():
             app.vars['feature1'] = request.form['feature1']
             
-            f = open('%s.txt'%(app.vars['ticker']),'w')
-            f.write('Feature 1: %s\n'%(len(app.vars['feature1'])))
-            f.close()
+            # Lines used for debugging
+            # f = open('%s.txt'%(app.vars['ticker']),'w')
+            # f.write('Feature 1: %s\n'%(len(app.vars['feature1'])))
+            # f.close()
         if 'feature2' in request.form.keys():
             app.vars['feature2'] = request.form['feature2']
-        
-            f = open('%s.txt'%(app.vars['ticker']),'a')
-            f.write('Feature 2: %s\n'%(len(app.vars['feature2'])))
-            f.close()
-        
-        f = open('%s.txt'%(app.vars['ticker']),'a')
-        f.write('Keys: %s\n'% app.vars.keys())
-        f.close()
 
         return redirect('/graph')
 
@@ -54,6 +50,8 @@ def graph():
     # build our figures
     p = figure(tools=TOOLS, x_axis_type='datetime')
     
+    # Check if feature1 was selected, if so query Quandl API and plot
+    # With more features, this snippet could be refactored into a dedicated function
     if 'feature1' in app.vars.keys():
         # If feature exists pull it from app object
         feature1 = app.vars['feature1']
@@ -64,14 +62,17 @@ def graph():
                         ticker = ['%s' % tick],
                         date = { 'gte': '2018-02-01', 'lte': '2018-02-29' },
                         api_key="DpZmHcsuom4huTFTtTZw")
-               
+        
+        # Coerce extracted data to pandas datetime format      
         data1['date'] = pd.to_datetime(data1['date'])
         
+        # Create figure glyph 
         p.line(data1['date'], data1['close'], 
                color="red", 
                alpha=0.5, 
                legend_label='%s: Closing price'% tick)
-        
+               
+    # Check if feature2 was selected, if so query Quandl API and plot   
     if 'feature2' in app.vars.keys():
         # If feature exists pull it from app object
         feature2 = app.vars['feature2']
@@ -83,16 +84,21 @@ def graph():
                         date = { 'gte': '2018-02-01', 'lte': '2018-02-29' },
                         api_key="DpZmHcsuom4huTFTtTZw")
         
+        # Coerce extracted data to pandas datetime format 
         data2['date'] = pd.to_datetime(data2['date'])
         
+        # Create figure glyph 
         p.line(data2['date'], data2['adj_close'], 
                color="blue", 
                alpha=0.5, 
                legend_label='%s: Adj Closing price'% tick)
     
+    # Create the HTML script to pass and embed in the graph.html page
     script, div = components(p)
+    resources = INLINE.render()
 
-    return render_template('graph.html',tick=tick,GenBokehPlot=script,GenBokehDiv=div)
+    # Now render the graph.html and pass scripts
+    return render_template('graph.html',tick=tick,GenBokehPlot=script,GenBokehDiv=div,resources=resources)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))

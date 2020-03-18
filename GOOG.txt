@@ -1,3 +1,0 @@
-Feature 1: 5
-Feature 2: 9
-Keys: dict_keys(['ticker', 'feature1', 'feature2'])
