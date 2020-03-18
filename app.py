@@ -9,16 +9,18 @@ import os
 
 app = Flask(__name__)
 
-app.vars={}
+
 
 @app.route('/', methods=['GET','POST'])
 def not_index():
+    app.vars={}
     return redirect('/index')
 
 @app.route('/index', methods=['GET','POST'])
 def index():
 
     if request.method == 'GET':
+        app.vars={}
         return render_template('index.html')
 
     else:
